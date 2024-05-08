@@ -1,0 +1,16 @@
+<section class="row">
+    {% for photo in photos %}
+    <article class="col-2 p-2">
+        <a href="{{ path('app_display_photo',{slug: photo.slug}) }}"><img src="{{ photo.url }}" class="img-fluid"></a>
+        <form action="{{ path('app_cart_add') }}" method="POST" class="row m-2">
+            <div class="col-md-4">
+                <input type="number" name="qty" value="1" step="1" min="1" max="300" class="form-control">
+            </div>
+            <div class="col-md-8">
+                <input type="hidden" name="id" value="{{ photo.id }}">
+                <button type="submit" class="btn btn-success text-center"> + Ajouter au <i class="icon-shopping-cart"></i></button>
+            </div>
+        </form>
+    </article>
+    {% endfor %}
+</section>

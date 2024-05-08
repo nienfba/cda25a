@@ -10,8 +10,65 @@
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
+        <meta name="turbo-refresh-method" content="morph">
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav class="navbar navbar-expand-lg sticky-top bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_front') }}">/Pictures</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.get('_route') == 'app_front' %}active{% endif %}" href="{{ path('app_front') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.get('_route') == 'app_static' %}active{% endif %}" href="{{ path('app_static_page',{pageName:'presentation'}) }}">Présentation</a>
+                        </li>
+    
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        <li class="nav-item"><a class="nav-link {% if app.request.get('_route') == 'app_redister' %}active{% endif %}" href="{{ path('app_register') }}"><i class="icon-keyboard"></i> Register</a></li>
+                       
+                        <li class="nav-item">{% if app.user %}{% trans with {'%name%': app.user.firstname} from 'login' %}welcome{% endtrans
+                            %} {% else %}<a class="nav-link  {% if app.request.get('_route') == 'app_login' %}active{% endif %}" href="{{ path('app_login') }}"><i class="icon-key"></i> Login</a>{% endif %}</li>
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-explore"></i> Language
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a href="{{ path('app_front', {_locale:'en'}) }}" class="dropdown-item">EN</a></li>
+                                <li><a href="{{ path('app_front', {_locale:'fr'}) }}" class="dropdown-item">FR</a></li>
+                                <li><a href="{{ path('app_front', {_locale:'es'}) }}" class="dropdown-item">ES</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_cart') }}">
+                                <button type="button" class="btn btn-primary position-relative"><i class="icon-shopping-cart"></i> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" id="cart">{% if app.session.get('cartQty') is defined %}{{ app.session.get('cartQty') }}{% else %}0{% endif %}</span></button>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                   
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <main class="container-fluid">
+            {% block body %}{% endblock %}
+        </main>
+        <div id="toasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast">
+                <!-- displayng toast message with Turbo-->
+            </div>
+        </div>
     </body>
 </html>

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% trans from 'form' %}Login{% endtrans %}{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    {% if app.user %}
+        <div class="alert alert-warning mb-3">
+            {% trans from 'form' %}You are logged in as {% endtrans %}{{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <section class="row">
+        <div class="col-lg-4 col-md-2"></div>
+        <div class="col-lg-4 col-md-2">
+            <div class="card border-info m-3">
+                <div class="card-header"><h2>{% trans from 'form' %}Login{% endtrans %}</h2></div>
+                <div class="card-body">
+                     <form method="post">
+                        <label for="username">{% trans from 'form' %}Email{% endtrans %}</label>
+                        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                        <label for="password">{% trans from 'form' %}Password{% endtrans %}</label>
+                        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <button class="btn btn-lg btn-primary mt-4" type="submit">{% trans from 'form' %}Connexion{% endtrans %}</button>
+                    </form>
+                </div>
+            </div>   
+        </div>
+        <div class="col-lg-4 col-md-2"></div>
+    </section>
+   
+{% endblock %}
